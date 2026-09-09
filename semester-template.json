@@ -1,0 +1,64 @@
+{
+  "_how_to_use": [
+    "Fill this in for one semester, then press 'Load file' on the site and pick it.",
+    "The whole tab named by 'term' is replaced by what is in 'events'.",
+    "term must be one of: 2025-26-1, 2025-26-2, 2026-27-1, 2026-27-2",
+    "range.from must be a SUNDAY and range.to a SATURDAY, so the week columns line up.",
+    "One file per semester. Save it as e.g. 2025-26-sem1.json"
+  ],
+  "_field_notes": {
+    "id": "any short unique code inside this semester, e.g. e001",
+    "start / end": "YYYY-MM-DD. Same value on both for a one-day event.",
+    "span": "number of days the block covers on the grid, 1 for a single day",
+    "category": "workshop | lecture | webinar | vac | assessment | academic | holiday | observance",
+    "kind": "the words shown above the title on the card, e.g. Guest Lecture",
+    "title": "the event name",
+    "audience": "list of classes, e.g. [\"II MCA\"] or [] if it applies to everyone",
+    "_proof_box": "Only workshop, lecture, webinar and vac get a proof tracker. Holidays and assessments do not, since they need no evidence."
+  },
+
+  "term": "2025-26-1",
+  "range": { "from": "2025-07-06", "to": "2025-12-20" },
+  "events": [
+    {
+      "id": "e001",
+      "start": "2025-07-11",
+      "end": "2025-07-11",
+      "span": 1,
+      "category": "academic",
+      "kind": "Academic milestone",
+      "title": "Commencement of Module-1 (I-Sem)",
+      "audience": []
+    },
+    {
+      "id": "e002",
+      "start": "2025-08-14",
+      "end": "2025-08-14",
+      "span": 1,
+      "category": "lecture",
+      "kind": "Guest Lecture",
+      "title": "Replace this with the actual lecture topic",
+      "audience": ["III BCA"]
+    },
+    {
+      "id": "e003",
+      "start": "2025-09-18",
+      "end": "2025-09-20",
+      "span": 3,
+      "category": "workshop",
+      "kind": "Workshop",
+      "title": "A three-day workshop spans three columns on the grid",
+      "audience": ["II MCA"]
+    },
+    {
+      "id": "e004",
+      "start": "2025-08-15",
+      "end": "2025-08-15",
+      "span": 1,
+      "category": "holiday",
+      "kind": "Holiday",
+      "title": "Independence Day",
+      "audience": []
+    }
+  ]
+}
