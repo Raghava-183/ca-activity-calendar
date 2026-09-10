@@ -874,7 +874,15 @@ function drawEvent(id){
       <p class="sub">Paste the Google Drive or Google Docs link for each document. Anyone
          reviewing this activity opens the evidence from here.</p>
 
-      <div class="proofbox">
+      <ul class="proofs" id="plist"></ul>
+      <div class="noproof" id="pempty" hidden>
+        <b>No proof attached yet.</b> Add the photographs, attendance sheet and event
+        report so this activity is ready for review.
+      </div>
+
+      <button class="btn ghost sm" id="addMore" hidden>Add another document</button>
+
+      <div class="proofbox" id="pbox">
         <div class="field">
           <label for="plbl">What the link holds</label>
           <input id="plbl" list="pkinds" placeholder="Photographs" autocomplete="off">
@@ -886,12 +894,6 @@ function drawEvent(id){
           <div class="hint" id="phint">Set the file to "Anyone with the link can view" before pasting it.</div>
         </div>
         <button class="btn" id="addProof">Attach link</button>
-      </div>
-
-      <ul class="proofs" id="plist"></ul>
-      <div class="noproof" id="pempty" hidden>
-        <b>No proof attached yet.</b> Add the photographs, attendance sheet and event
-        report so this activity is ready for review.
       </div>
     </section>
 
@@ -906,9 +908,13 @@ function drawEvent(id){
     </section>
   </article>`;
 
+  proofFormOpen = false;
   drawProofs(e.id);
 
   $("#addProof").addEventListener("click", ()=>addProof(e.id));
+  $("#addMore").addEventListener("click", ()=>{
+    proofFormOpen = true; drawProofs(e.id); $("#plbl").focus();
+  });
   $("#purl").addEventListener("keydown", ev=>{ if(ev.key==="Enter") addProof(e.id); });
   $("#notes").addEventListener("input", ev=>{
     rec(e.id).notes = ev.target.value; saveRecords();
@@ -917,14 +923,18 @@ function drawEvent(id){
   });
 }
 
+let proofFormOpen = false;
 function drawProofs(id){
   const list = rec(id).proofs;
-  $("#pempty").hidden = list.length>0;
+  const has = list.length > 0;
+  $("#pempty").hidden = has;
+  $("#pbox").hidden = has && !proofFormOpen;
+  $("#addMore").hidden = !has || proofFormOpen;
   $("#plist").innerHTML = list.map((p,idx)=>`
     <li>
       <div class="meta">
         <div class="lbl">${esc(p.label)}</div>
-        <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${esc(p.url)}</a>
+        <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" title="${esc(p.url)}">${esc(shortUrl(p.url))}</a>
         <time>Attached ${esc(p.added)}</time>
       </div>
       <button class="rm" data-rm="${idx}" aria-label="Remove ${esc(p.label)}" title="Remove">&times;</button>
@@ -953,7 +963,8 @@ function addProof(id){
   lbl.value=""; url.value="";
   hint.textContent='Set the file to "Anyone with the link can view" before pasting it.';
   hint.className="hint";
-  drawProofs(id); drawProgress(); lbl.focus();
+  proofFormOpen = false;
+  drawProofs(id); drawProgress();
 }
 
 /* ═══════════════ SUMMARY SHEET ═══════════════ */
