@@ -47,6 +47,8 @@
   --c-observance:#55658040;
   --c-observance:#556580;
   --c-academic:#565b67;
+  --c-fdp:#5f3a9e;
+  --c-deptevent:#a3345c;
 
   /* layered elevation */
   --e1:0 1px 2px rgba(4,31,82,.07);
@@ -538,30 +540,33 @@ const TERMS = [
       { id:"e001", start:"2026-07-10", end:"2026-07-10", span:1, category:"academic", kind:"Academic milestone", title:"Commencement of Module-1 (I-Sem)", audience:[] },
       { id:"e002", start:"2026-07-25", end:"2026-07-25", span:1, category:"lecture", kind:"Guest Lecture", title:"Deep Learning & Agentic Tools", audience:[] },
       { id:"e003", start:"2026-07-29", end:"2026-07-30", span:2, category:"assessment", kind:"Assessment", title:"FA-1", audience:[] },
-      { id:"e004", start:"2026-08-07", end:"2026-08-07", span:1, category:"lecture", kind:"Guest Lecture", title:"The Digital Balance: Are You Controlling Technology or Being Controlled?", audience:[] },
-      { id:"e005", start:"2026-08-13", end:"2026-08-13", span:1, category:"webinar", kind:"Webinar", title:"Data to Decisions: AI, Analytics, and Business Intelligence", audience:[] },
+      { id:"e004", start:"2026-08-06", end:"2026-08-08", span:1, category:"fdp", kind:"FDP / STTP", title:"Training program on Agentic Tools for Non-Teaching Staff", audience:[] },
+      { id:"e005", start:"2026-08-07", end:"2026-08-07", span:1, category:"lecture", kind:"Guest Lecture", title:"The Digital Balance: Are You Controlling Technology or Being Controlled?", audience:[] },
       { id:"e006", start:"2026-08-15", end:"2026-08-15", span:1, category:"holiday", kind:"Holiday", title:"Independence day", audience:[] },
       { id:"e007", start:"2026-08-20", end:"2026-08-22", span:3, category:"workshop", kind:"Workshop", title:"3-Day Hands-on Workshop on \"Google Cloud Infrastructure, Data Analytics & AI\" \u2013 Cloud Sphere 360", audience:["III BCA"] },
       { id:"e008", start:"2026-08-25", end:"2026-08-25", span:1, category:"holiday", kind:"Holiday", title:"Milad-un-Nabi", audience:[] },
-      { id:"e009", start:"2026-09-04", end:"2026-09-04", span:1, category:"holiday", kind:"Holiday", title:"Krishnasthami", audience:[] },
-      { id:"e010", start:"2026-09-10", end:"2026-09-12", span:3, category:"workshop", kind:"Workshop", title:"Prompt to product: Building Full Stack Applications with AI", audience:["II MCA"] },
-      { id:"e011", start:"2026-09-14", end:"2026-09-14", span:1, category:"holiday", kind:"Holiday", title:"Vinayaka Chavathi", audience:[] },
-      { id:"e012", start:"2026-09-18", end:"2026-09-18", span:1, category:"lecture", kind:"Guest Lecture", title:"From Classroom to Corporate: Building a Successful IT Career", audience:[] },
-      { id:"e013", start:"2026-09-24", end:"2026-09-26", span:3, category:"workshop", kind:"Workshop", title:"NEXT-GEN SOFTWARE DEVELOPMENT: DEVOPS, DEVSECOPS & CI/CD & IoT Unleashed: Build, Connect & Innovate", audience:["II BCA", "III BCA"] },
-      { id:"e014", start:"2026-10-02", end:"2026-10-02", span:1, category:"holiday", kind:"Holiday", title:"Gandhi Jayanthi", audience:[] },
-      { id:"e015", start:"2026-10-10", end:"2026-10-10", span:1, category:"workshop", kind:"Workshop", title:"From Ideas to AI Agents: A No-Code Development Workshop", audience:["I MCA"] },
-      { id:"e016", start:"2026-10-17", end:"2026-10-17", span:1, category:"webinar", kind:"Webinar", title:"AR/VR and Immersive Technologies", audience:[] },
-      { id:"e017", start:"2026-10-18", end:"2026-10-18", span:1, category:"observance", kind:"Observance", title:"Durgaastami", audience:[] },
-      { id:"e018", start:"2026-10-19", end:"2026-10-19", span:1, category:"holiday", kind:"Holiday", title:"Dasara Holiday", audience:[] },
-      { id:"e019", start:"2026-10-20", end:"2026-10-20", span:1, category:"holiday", kind:"Holiday", title:"Vijaya Dasami", audience:[] },
-      { id:"e020", start:"2026-10-21", end:"2026-10-21", span:1, category:"holiday", kind:"Holiday", title:"Dasara Holiday", audience:[] },
-      { id:"e021", start:"2026-10-24", end:"2026-10-24", span:1, category:"lecture", kind:"Guest Lecture", title:"Cybersecurity in the Modern Digital World", audience:[] },
-      { id:"e022", start:"2026-10-29", end:"2026-10-31", span:3, category:"workshop", kind:"Workshop", title:"AI \u00d7 Git: Your First Web Application A Hands-On No-Code & AI-Assisted Web Development Workshop", audience:["I BCA"] },
-      { id:"e023", start:"2026-11-05", end:"2026-11-07", span:3, category:"workshop", kind:"Workshop", title:"Jenkins & Docker: End-to-End CI/CD and Deployment Workshop", audience:["II MCA"] },
-      { id:"e024", start:"2026-11-08", end:"2026-11-08", span:1, category:"observance", kind:"Observance", title:"Deepavali", audience:[] },
-      { id:"e025", start:"2026-11-20", end:"2026-11-20", span:1, category:"lecture", kind:"Guest Lecture", title:"Emerging Technologies Shaping the Digital Future", audience:[] },
-      { id:"e026", start:"2026-11-28", end:"2026-11-28", span:1, category:"vac", kind:"VAC", title:"Modern Web Development & Cloud-Native Applications", audience:[] },
-      { id:"e027", start:"2026-12-14", end:"2026-12-14", span:1, category:"academic", kind:"Academic milestone", title:"Academic marker \u2014 not captioned in the source sheet", audience:[], needsTitle:true }
+      { id:"e009", start:"2026-08-28", end:"2026-08-28", span:1, category:"deptevent", kind:"Department event", title:"Agentic Day Events", audience:[] },
+      { id:"e010", start:"2026-08-29", end:"2026-08-29", span:1, category:"deptevent", kind:"Department event", title:"AI Talk", audience:[] },
+      { id:"e011", start:"2026-09-04", end:"2026-09-04", span:1, category:"holiday", kind:"Holiday", title:"Krishnasthami", audience:[] },
+      { id:"e012", start:"2026-09-10", end:"2026-09-12", span:3, category:"workshop", kind:"Workshop", title:"Prompt to product: Building Full Stack Applications with AI", audience:["II MCA"] },
+      { id:"e013", start:"2026-09-14", end:"2026-09-14", span:1, category:"holiday", kind:"Holiday", title:"Vinayaka Chavathi", audience:[] },
+      { id:"e014", start:"2026-09-18", end:"2026-09-18", span:1, category:"lecture", kind:"Guest Lecture", title:"From Classroom to Corporate: Building a Successful IT Career", audience:[] },
+      { id:"e015", start:"2026-09-24", end:"2026-09-26", span:3, category:"workshop", kind:"Workshop", title:"NEXT-GEN SOFTWARE DEVELOPMENT: DEVOPS, DEVSECOPS & CI/CD & IoT Unleashed: Build, Connect & Innovate", audience:["II BCA", "III BCA"] },
+      { id:"e016", start:"2026-10-02", end:"2026-10-02", span:1, category:"holiday", kind:"Holiday", title:"Gandhi Jayanthi", audience:[] },
+      { id:"e017", start:"2026-10-10", end:"2026-10-10", span:1, category:"workshop", kind:"Workshop", title:"From Ideas to AI Agents: A No-Code Development Workshop", audience:["I MCA"] },
+      { id:"e018", start:"2026-10-17", end:"2026-10-17", span:1, category:"webinar", kind:"Webinar", title:"AR/VR and Immersive Technologies", audience:[] },
+      { id:"e019", start:"2026-10-18", end:"2026-10-18", span:1, category:"observance", kind:"Observance", title:"Durgaastami", audience:[] },
+      { id:"e020", start:"2026-10-19", end:"2026-10-19", span:1, category:"holiday", kind:"Holiday", title:"Dasara Holiday", audience:[] },
+      { id:"e021", start:"2026-10-20", end:"2026-10-20", span:1, category:"holiday", kind:"Holiday", title:"Vijaya Dasami", audience:[] },
+      { id:"e022", start:"2026-10-21", end:"2026-10-21", span:1, category:"holiday", kind:"Holiday", title:"Dasara Holiday", audience:[] },
+      { id:"e023", start:"2026-10-24", end:"2026-10-24", span:1, category:"lecture", kind:"Guest Lecture", title:"Cybersecurity in the Modern Digital World", audience:[] },
+      { id:"e024", start:"2026-10-29", end:"2026-10-31", span:3, category:"workshop", kind:"Workshop", title:"AI \u00d7 Git: Your First Web Application A Hands-On No-Code & AI-Assisted Web Development Workshop", audience:["I BCA"] },
+      { id:"e025", start:"2026-11-05", end:"2026-11-07", span:3, category:"workshop", kind:"Workshop", title:"Jenkins & Docker: End-to-End CI/CD and Deployment Workshop", audience:["II MCA"] },
+      { id:"e026", start:"2026-11-08", end:"2026-11-08", span:1, category:"observance", kind:"Observance", title:"Deepavali", audience:[] },
+      { id:"e027", start:"2026-11-12", end:"2026-11-16", span:3, category:"fdp", kind:"FDP / STTP", title:"5-day hands-on FDP on Cloud Computing and AI: From Foundations to Intelligent Applications", audience:[] },
+      { id:"e028", start:"2026-11-20", end:"2026-11-20", span:1, category:"lecture", kind:"Guest Lecture", title:"Emerging Technologies Shaping the Digital Future", audience:[] },
+      { id:"e029", start:"2026-11-28", end:"2026-11-28", span:1, category:"vac", kind:"VAC", title:"Modern Web Development & Cloud-Native Applications", audience:[] },
+      { id:"e030", start:"2026-12-14", end:"2026-12-14", span:1, category:"academic", kind:"Academic milestone", title:"Academic marker \u2014 not captioned in the source sheet", audience:[], needsTitle:true }
     ] },
   { id:"2026-27-2", year:"2026-27", sem:"Sem-II", label:"2026-27 Sem-II", range:null, events:[] }
 ];
@@ -571,6 +576,8 @@ const CATS = {
   lecture:   { name:"Guest lecture",      tone:"var(--c-lecture)",    activity:true  },
   webinar:   { name:"Webinar",            tone:"var(--c-webinar)",    activity:true  },
   vac:       { name:"Value-added course", tone:"var(--c-vac)",        activity:true  },
+  fdp:       { name:"FDP / STTP",         tone:"var(--c-fdp)",        activity:true  },
+  deptevent: { name:"Department event",   tone:"var(--c-deptevent)",  activity:true  },
   assessment:{ name:"Assessment",         tone:"var(--c-assessment)", activity:false },
   academic:  { name:"Academic milestone", tone:"var(--c-academic)",   activity:false },
   holiday:   { name:"Holiday",            tone:"var(--c-holiday)",    activity:false },
@@ -622,6 +629,30 @@ function segFor(id,mini){
   </div>`;
 }
 
+/* Proof documents supplied with the departmental workbook. Seeded once per
+   browser; anything the user adds or removes afterwards is left alone. */
+const SEEDED_PROOFS = {
+  "e002":"https://docs.google.com/document/d/17W5_oZ4781eXpi_PPi0aS4sFRcvvZQCo/edit?usp=drive_link&ouid=114858272988243998364&rtpof=true&sd=true",
+  "e004":"https://docs.google.com/document/d/135F1Rl5q71f96NhXspKaGYfCCwmtnwML/edit?usp=sharing&ouid=114858272988243998364&rtpof=true&sd=true",
+  "e005":"https://docs.google.com/document/d/1qe-2a2wrVFAue3IfZvQ_s8f29dH7bWjh/edit?usp=sharing&ouid=114858272988243998364&rtpof=true&sd=true",
+  "e007":"https://drive.google.com/file/d/1SNQMkZr_BJRq0Qud-B8VZTHy2bgz6ZBU/view?usp=sharing",
+  "e009":"https://drive.google.com/file/d/1TzJdHfCuBAPSHqK4TavlZ-C3YUrFXvI3/view?usp=drive_link",
+  "e010":"https://docs.google.com/document/d/1tn4o_qippr1Omq1TPyEo71H7z0_shYE9/edit?usp=drive_link&ouid=114858272988243998364&rtpof=true&sd=true"
+};
+function seedProofs(){
+  let touched = false;
+  Object.entries(SEEDED_PROOFS).forEach(([id,url])=>{
+    const r = rec(id);
+    if(r.seeded) return;
+    r.seeded = true; touched = true;
+    if(!r.proofs.some(p=>p.url===url)){
+      r.proofs.push({ label:"Event report", url, added:"with the 2026-27 workbook" });
+    }
+    if(!r.status) r.status = "completed";
+  });
+  if(touched) saveRecords();
+}
+
 /* ── helpers ─────────────────────────────────────────────── */
 const $  = s => document.querySelector(s);
 const D  = s => new Date(s + "T00:00:00");
@@ -639,6 +670,15 @@ function spanLabel(e){
 }
 const term = id => TERMS.find(t=>t.id===id);
 /* compact form for the report table, where column width is tight */
+/* Drive URLs run to 150+ characters; on paper a readable stub is more use */
+function shortUrl(u){
+  try{
+    const x = new URL(u);
+    const path = x.pathname.replace(/\/(edit|view)$/,"");
+    const t = x.host.replace(/^www\./,"") + path;
+    return t.length > 46 ? t.slice(0,46) + "\u2026" : t;
+  }catch{ return u.length > 46 ? u.slice(0,46) + "\u2026" : u; }
+}
 function shortSpan(e){
   const M = m => MON[m].slice(0,3);
   const a = D(e.start), b = D(e.end);
@@ -664,7 +704,7 @@ function drawTabs(){
 function drawChips(){
   const t = term(state.term);
   const present = [...new Set(t.events.map(e=>e.category))];
-  const order = ["workshop","lecture","webinar","vac","assessment","academic","holiday","observance"]
+  const order = ["workshop","fdp","lecture","webinar","vac","deptevent","assessment","academic","holiday","observance"]
     .filter(c=>present.includes(c));
   $("#chips").innerHTML =
     `<button class="chip" data-cat="all" aria-pressed="${state.filter==="all"}">Everything</button>` +
@@ -704,8 +744,8 @@ function drawCalendar(){
   const byStart = {}, covered = new Set();
   t.events.filter(matches).forEach(e=>{
     (byStart[e.start] ||= []).push(e);
-    for(let d=D(e.start), end=D(e.end); d<=end; d.setDate(d.getDate()+1)){
-      if(iso(d)!==e.start) covered.add(iso(d));
+    for(let k=1; k<e.span; k++){
+      const d = D(e.start); d.setDate(d.getDate()+k); covered.add(iso(d));
     }
   });
 
@@ -978,7 +1018,7 @@ function drawReport(){
   const done = acts.filter(e=>proofCount(e.id)>0);
   const pending = acts.filter(e=>proofCount(e.id)===0);
 
-  const tally = Object.keys(CATS).filter(c=>CATS[c].activity).map(c=>{
+  const tally = ["workshop","fdp","lecture","webinar","vac","deptevent"].filter(c=>CATS[c]).map(c=>{
     const n = acts.filter(e=>e.category===c).length;
     return n ? `<span style="--tone:${CATS[c].tone}"><b>${n}</b> ${esc(CATS[c].name)}${n>1?"s":""}</span>` : "";
   }).join("");
@@ -992,7 +1032,7 @@ function drawReport(){
       <td class="ttl"><b>${esc(e.title)}</b>${(e.audience||[]).length?`<em>${esc(e.audience.join(" \u00b7 "))}</em>`:""}</td>
       <td class="${statusOf(e.id)==="completed"?"st-done":"st-plan"}">${statusOf(e.id)==="completed"?"Completed":"Planned"}</td>
       <td>${ps.length
-        ? `<ul class="pl">${ps.map(x=>`<li><b>${esc(x.label)}</b><span>${esc(x.url)}</span></li>`).join("")}</ul>`
+        ? `<ul class="pl">${ps.map(x=>`<li><b>${esc(x.label)}</b><span>${esc(shortUrl(x.url))}</span></li>`).join("")}</ul>`
         : `<span class="none">Not attached</span>`}</td>
     </tr>`;
   }).join("");
@@ -1168,6 +1208,7 @@ $("#stamp").textContent = "Viewed " + new Date().toLocaleDateString("en-GB",{day
 
 (async function init(){
   await loadRecords();
+  seedProofs();
   readHash();
   if(!location.hash) writeHash();
   render();
