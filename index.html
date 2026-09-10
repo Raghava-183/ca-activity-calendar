@@ -108,7 +108,9 @@ button{font:inherit;color:inherit}
   content:"";position:absolute;inset:0 0 auto;height:3px;
   background:linear-gradient(90deg,var(--navy-900),var(--navy-500) 42%,var(--vred) 82%,var(--vred));
 }
-.masthead-in{max-width:1400px;margin:0 auto;padding:1.35rem 1.4rem .25rem}
+.masthead-in{max-width:1400px;margin:0 auto;padding:1.35rem 1.4rem .25rem;position:relative}
+.tbtn.signin{position:absolute;right:1.4rem;top:1.4rem}
+@media (max-width:700px){.tbtn.signin{position:static;margin-bottom:.7rem}}
 .masthead h1{font-size:var(--step-3);color:var(--navy-900);font-weight:700;letter-spacing:-.014em}
 .masthead h1 span{
   display:block;max-width:62ch;font-size:var(--step-1);font-weight:400;
@@ -205,6 +207,27 @@ button{font:inherit;color:inherit}
 .progress .track{flex:1;height:4px;background:var(--rule-soft);border-radius:3px;overflow:hidden;max-width:340px;box-shadow:inset 0 1px 2px rgba(4,31,82,.09)}
 .progress .fill{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--navy-700),var(--navy-500));transition:width .6s var(--ease)}
 .progress b{font-weight:700;color:var(--navy-900)}
+
+.note{
+  max-width:1400px;margin:0 auto .9rem;padding:.6rem 1rem;
+  border:1px solid var(--rule);border-left:3px solid var(--navy-500);border-radius:var(--r);
+  background:linear-gradient(160deg,#f2f7fd,#fff 60%);
+  font-size:var(--step--1);color:var(--ink-soft);box-shadow:var(--e1);
+  width:calc(100% - 2.8rem);
+}
+.note.bad{border-left-color:var(--vred);background:linear-gradient(160deg,color-mix(in srgb,var(--vred) 5%,#fff),#fff 60%);color:var(--ink)}
+
+.dlg{
+  border:1px solid var(--rule);border-radius:var(--r-lg);padding:1.5rem 1.6rem 1.3rem;
+  width:min(26rem,92vw);box-shadow:var(--e3);background:var(--surface);color:var(--ink);
+}
+.dlg::backdrop{background:rgba(4,31,82,.42);backdrop-filter:blur(3px)}
+.dlg h3{font-size:1.4rem;color:var(--navy-900)}
+.dlg-sub{margin:.2rem 0 1.1rem;font-size:var(--step--1);color:var(--ink-faint)}
+.dlg-row{display:flex;justify-content:flex-end;gap:.5rem;margin:1.1rem 0 0;padding:0}
+.whoami{font-size:var(--step--1);color:var(--ink-soft);display:flex;align-items:center;gap:.45rem}
+.whoami b{color:var(--navy-900)}
+.pchip.plan{color:var(--ink-soft);border-color:var(--rule);background:var(--paper)}
 
 /* ═══════════════ CALENDAR GRID ═══════════════ */
 main{max-width:1400px;margin:0 auto;padding:0 1.4rem 4rem}
@@ -488,6 +511,7 @@ footer b{color:#fff;font-weight:600}
 
 <header class="masthead">
   <div class="masthead-in">
+    <button class="tbtn signin" id="signBtn">Sign in to edit</button>
     <h1>Activity Calendar<span>Guest lectures, workshops, webinars and value-added courses — each one with its proof file</span></h1>
   </div>
   <nav class="tabs" role="tablist" aria-label="Academic year and semester" id="tabs"></nav>
@@ -515,7 +539,27 @@ footer b{color:#fff;font-weight:600}
   <span id="ptext"></span>
 </div>
 
+<p class="note" id="note" hidden></p>
+
 <main id="view" aria-live="polite"></main>
+
+<dialog class="dlg" id="signin">
+  <h3>Sign in to add proofs</h3>
+  <p class="dlg-sub">For the organising team. Anyone can read the calendar without signing in.</p>
+  <div class="field">
+    <label for="edName">Your name</label>
+    <input id="edName" autocomplete="name" placeholder="As it should appear in the sheet">
+  </div>
+  <div class="field">
+    <label for="edKey">Department edit code</label>
+    <input id="edKey" type="password" autocomplete="off">
+  </div>
+  <p class="hint bad" id="edErr" hidden></p>
+  <menu class="dlg-row">
+    <button class="btn ghost" id="edCancel" type="button">Cancel</button>
+    <button class="btn" id="edGo" type="button">Sign in</button>
+  </menu>
+</dialog>
 
 <footer>
   <div>
@@ -593,36 +637,97 @@ const PROOF_KINDS = ["Photographs","Attendance sheet","Event report","Brochure /
    everything in memory for the session. "Save backup" writes a JSON
    file either way, so proof links are never trapped in the page.
    ═══════════════════════════════════════════════════════════════ */
+/* ── Shared store ────────────────────────────────────────────
+   Paste the Apps Script web-app URL between the quotes below and the
+   whole department reads and writes one Google Sheet. Leave it empty
+   and the page keeps everything in this browser only.            */
+const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwaVFGaZKlRwIsRTnhu0NBGBDUIZ-g496zxYxTFDJ1SpMCc52wX59YwBqBNeKV5j9wA/exec";
+
 const KEY = "vfstr-ca-activity-records";
-let RECORDS = {};                 // eventId -> { proofs:[], notes:"" }
-let persistent = false;
+let RECORDS = {};
+let REMOTE = false;          // talking to the sheet
+let canEdit = false;         // organiser has signed in (always true without a sheet)
+let EDITOR = "", EDITCODE = "";
 
 async function loadRecords(){
+  if(BACKEND_URL){
+    try{
+      const r = await fetch(BACKEND_URL, {method:"GET"});
+      const d = await r.json();
+      if(d && d.records){ RECORDS = d.records; REMOTE = true; return; }
+      throw new Error("The sheet sent back something unexpected");
+    }catch(e){
+      console.warn("Shared sheet unreachable:", e);
+      note("Could not reach the shared sheet, so proofs are not showing. Check your connection, then reload.", true);
+      return;
+    }
+  }
   try{
     if(window.storage && typeof window.storage.get === "function"){
       const r = await window.storage.get(KEY);
-      persistent = true;
       if(r && r.value) RECORDS = JSON.parse(r.value);
     }
-  }catch(e){ /* first run, or no store available */ persistent = !!window.storage; }
+  }catch(e){ /* nothing stored yet */ }
 }
+
 let saveTimer;
 function saveRecords(){
+  if(REMOTE) return;                    // the sheet is the record
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async ()=>{
     try{
       if(window.storage && typeof window.storage.set === "function"){
         await window.storage.set(KEY, JSON.stringify(RECORDS));
       }
-    }catch(e){ console.warn("Could not write to the store:", e); }
+    }catch(e){ console.warn("Could not write locally:", e); }
   }, 250);
 }
-const rec = id => (RECORDS[id] ||= { proofs:[], notes:"" });
+
+async function api(action, payload){
+  const body = Object.assign({action, code:EDITCODE, who:EDITOR}, payload||{});
+  const r = await fetch(BACKEND_URL, {
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},   // keeps it a simple request
+    body: JSON.stringify(body)
+  });
+  const d = await r.json();
+  if(!d.ok) throw new Error(d.error || "The sheet refused that change");
+  if(d.records) RECORDS = d.records;
+  return d;
+}
+
+/* Apply locally at once, then send it on. If the sheet rejects it,
+   pull the truth back rather than leaving a wrong screen. */
+function mutate(applyLocally, action, payload, redraw){
+  applyLocally();
+  if(redraw) redraw();
+  if(!REMOTE){ saveRecords(); return; }
+  api(action, payload).catch(err=>{
+    note("Could not save to the shared sheet: " + err.message, true);
+    loadRecords().then(()=>render());
+  });
+}
+
+function note(msg, bad){
+  const el = $("#note");
+  el.textContent = msg;
+  el.className = "note" + (bad ? " bad" : "");
+  el.hidden = false;
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>{ el.hidden = true; }, bad ? 9000 : 3200);
+}
+
+const rec = id => (RECORDS[id] ||= { proofs:[], notes:"", status:"planned" });
 const proofCount = id => (RECORDS[id]?.proofs?.length) || 0;
 const statusOf   = id => (RECORDS[id]?.status) || "planned";
-function setStatus(id,v){ rec(id).status = v; saveRecords(); }
+function setStatus(id,v){
+  const ev = term(state.term).events.find(x=>x.id===id);
+  mutate(()=>{ rec(id).status = v; },
+    "setStatus", { term:state.term, id, title: ev ? ev.title : "", status:v }, null);
+}
 function segFor(id,mini){
   const done = statusOf(id)==="completed";
+  if(!canEdit) return `<span class="pchip ${done?"yes":"plan"}">${done?"Completed":"Planned"}</span>`;
   return `<div class="seg${mini?" mini":""}" role="group" aria-label="Status">
     <button data-st="planned" data-id="${id}" aria-pressed="${!done}">Planned</button>
     <button class="done" data-st="completed" data-id="${id}" aria-pressed="${done}">Completed</button>
@@ -876,8 +981,9 @@ function drawEvent(id){
 
       <ul class="proofs" id="plist"></ul>
       <div class="noproof" id="pempty" hidden>
-        <b>No proof attached yet.</b> Add the photographs, attendance sheet and event
-        report so this activity is ready for review.
+        <b>No proof attached yet.</b> ${canEdit
+          ? "Add the photographs, attendance sheet and event report so this activity is ready for review."
+          : "The organiser has not uploaded the documents for this activity yet."}
       </div>
 
       <button class="btn ghost sm" id="addMore" hidden>Add another document</button>
@@ -902,7 +1008,7 @@ function drawEvent(id){
       <p class="sub">Resource person, venue, number of participants, outcome.</p>
       <div class="field">
         <label for="notes">Notes</label>
-        <textarea id="notes" placeholder="Resource person and affiliation&#10;Venue&#10;Participants&#10;Outcome">${esc(r.notes||"")}</textarea>
+        <textarea id="notes" ${canEdit?"":"readonly"} placeholder="Resource person and affiliation&#10;Venue&#10;Participants&#10;Outcome">${esc(r.notes||"")}</textarea>
       </div>
       <span class="saved" id="savedFlag">Saved</span>
     </section>
@@ -916,8 +1022,14 @@ function drawEvent(id){
     proofFormOpen = true; drawProofs(e.id); $("#plbl").focus();
   });
   $("#purl").addEventListener("keydown", ev=>{ if(ev.key==="Enter") addProof(e.id); });
-  $("#notes").addEventListener("input", ev=>{
-    rec(e.id).notes = ev.target.value; saveRecords();
+  if(canEdit) $("#notes").addEventListener("input", evt=>{
+    rec(e.id).notes = evt.target.value;
+    clearTimeout(window._noteT);
+    window._noteT = setTimeout(()=>{
+      mutate(()=>{}, "setNotes",
+        { term:state.term, id:e.id, title:e.title, notes: rec(e.id).notes }, null);
+    }, 700);
+    if(!REMOTE) saveRecords();
     const f=$("#savedFlag"); f.classList.add("on"); clearTimeout(f._t);
     f._t=setTimeout(()=>f.classList.remove("on"),1400);
   });
@@ -928,21 +1040,23 @@ function drawProofs(id){
   const list = rec(id).proofs;
   const has = list.length > 0;
   $("#pempty").hidden = has;
-  $("#pbox").hidden = has && !proofFormOpen;
-  $("#addMore").hidden = !has || proofFormOpen;
+  $("#pbox").hidden = !canEdit || (has && !proofFormOpen);
+  $("#addMore").hidden = !canEdit || !has || proofFormOpen;
   $("#plist").innerHTML = list.map((p,idx)=>`
     <li>
       <div class="meta">
         <div class="lbl">${esc(p.label)}</div>
         <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" title="${esc(p.url)}">${esc(shortUrl(p.url))}</a>
-        <time>Attached ${esc(p.added)}</time>
+        <time>Attached ${esc(p.added)}${p.by?" by "+esc(p.by):""}</time>
       </div>
-      <button class="rm" data-rm="${idx}" aria-label="Remove ${esc(p.label)}" title="Remove">&times;</button>
+      ${canEdit?`<button class="rm" data-rm="${idx}" aria-label="Remove ${esc(p.label)}" title="Remove">&times;</button>`:""}
     </li>`).join("");
   $("#plist").querySelectorAll("[data-rm]").forEach(b=>{
     b.addEventListener("click", ()=>{
-      rec(id).proofs.splice(+b.dataset.rm,1);
-      saveRecords(); drawProofs(id); drawProgress();
+      const gone = rec(id).proofs[+b.dataset.rm];
+      mutate(()=>rec(id).proofs.splice(+b.dataset.rm,1),
+        "removeProof", { term:state.term, id, url:gone.url },
+        ()=>{ drawProofs(id); drawProgress(); });
     });
   });
 }
@@ -954,12 +1068,14 @@ function addProof(id){
   if(!/^https?:\/\//i.test(u)) u = "https://" + u;
   try{ new URL(u); }
   catch{ hint.textContent="That isn't a working web address. Check the link and paste it again."; hint.className="hint bad"; url.focus(); return; }
-  rec(id).proofs.push({
-    label: lbl.value.trim() || "Supporting document",
-    url: u,
-    added: new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})
-  });
-  saveRecords();
+  const label = lbl.value.trim() || "Supporting document";
+  const ev = term(state.term).events.find(x=>x.id===id);
+  mutate(
+    ()=>rec(id).proofs.push({ label, url:u, by:EDITOR,
+        added: new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) }),
+    "addProof", { term:state.term, id, title: ev ? ev.title : "", label, url:u },
+    null
+  );
   lbl.value=""; url.value="";
   hint.textContent='Set the file to "Anyone with the link can view" before pasting it.';
   hint.className="hint";
@@ -1104,6 +1220,10 @@ function handleFile(file){
     try{ data=JSON.parse(fr.result); }
     catch{ alert("That file isn't valid JSON. Load a backup saved from this page, or a semester calendar file."); return; }
 
+    if(data.records && REMOTE){
+      alert("This calendar now saves to the shared Google Sheet, so proof records are restored there rather than here.");
+      return;
+    }
     if(data.records){                                   // proof backup
       Object.entries(data.records).forEach(([k,v])=>{
         const r=rec(k);
@@ -1188,6 +1308,44 @@ document.addEventListener("click", ev=>{
 });
 
 $("#q").addEventListener("input", e=>{ state.q=e.target.value.trim(); if(!state.event) drawCalendar(); });
+function refreshSignBtn(){
+  const b = $("#signBtn");
+  b.textContent = canEdit ? ("Editing as " + EDITOR + " \u00b7 Sign out") : "Sign in to edit";
+  b.hidden = !BACKEND_URL;
+}
+
+$("#signBtn").addEventListener("click", ()=>{
+  if(canEdit){
+    canEdit = false; EDITOR = ""; EDITCODE = "";
+    refreshSignBtn(); render();
+    note("Signed out. The calendar is now read-only.");
+    return;
+  }
+  $("#edErr").hidden = true;
+  $("#signin").showModal();
+  $("#edName").focus();
+});
+$("#edCancel").addEventListener("click", ()=>$("#signin").close());
+$("#edGo").addEventListener("click", async ()=>{
+  const name = $("#edName").value.trim(), code = $("#edKey").value;
+  const err = $("#edErr");
+  if(!name){ err.textContent="Please enter your name."; err.hidden=false; $("#edName").focus(); return; }
+  if(!code){ err.textContent="Please enter the department edit code."; err.hidden=false; $("#edKey").focus(); return; }
+  $("#edGo").disabled = true;
+  try{
+    EDITCODE = code; EDITOR = name;
+    await api("check", {});
+    canEdit = true;
+    $("#signin").close(); $("#edKey").value = "";
+    refreshSignBtn(); render();
+    note("Signed in as " + name + ". Your name is recorded against anything you add.");
+  }catch(e){
+    EDITCODE = ""; EDITOR = "";
+    err.textContent = e.message; err.hidden = false;
+  }finally{ $("#edGo").disabled = false; }
+});
+$("#edKey").addEventListener("keydown", e=>{ if(e.key==="Enter") $("#edGo").click(); });
+
 $("#sheetBtn").addEventListener("click", ()=>{
   state.event="summary"; writeHash(); go(render); window.scrollTo({top:0,behavior:"smooth"});
 });
@@ -1218,11 +1376,16 @@ $("#stamp").textContent = "Viewed " + new Date().toLocaleDateString("en-GB",{day
 })();
 
 (async function init(){
+  canEdit = !BACKEND_URL;      // no shared sheet means single-user, edit freely
   await loadRecords();
-  seedProofs();
+  if(!REMOTE) seedProofs();
   readHash();
   if(!location.hash) writeHash();
+  refreshSignBtn();
   render();
+  if(REMOTE){
+    addEventListener("focus", ()=>{ loadRecords().then(()=>render()); });
+  }
 })();
 </script>
 </body>
