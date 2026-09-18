@@ -1,0 +1,11 @@
+{
+  "name": "ca-activity-calendar",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Activity Calendar — Department of Computer Applications, VFSTR",
+  "dependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@neondatabase/serverless": "^0.10.4"
+  }
+}
