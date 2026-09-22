@@ -618,7 +618,33 @@ footer b{color:#fff;font-weight:600}
    The other three semesters are ready to receive their calendars.
    ═══════════════════════════════════════════════════════════════ */
 const TERMS = [
-  { id:"2025-26-1", year:"2025-26", sem:"Sem-I",  label:"2025-26 Sem-I",  range:null, events:[] },
+  { id:"2025-26-1", year:"2025-26", sem:"Sem-I",  label:"2025-26 Sem-I",
+    range:{ from:"2025-07-13", to:"2025-12-20" },
+    events: [
+      { id:"e001", start:"2025-07-14", end:"2025-07-14", span:1, category:"academic", kind:"Academic milestone", title:"Commencement of Module-1 (I Sem)", audience:[] },
+      { id:"e002", start:"2025-08-15", end:"2025-08-15", span:1, category:"holiday", kind:"Holiday", title:"Independence Day", audience:[] },
+      { id:"e003", start:"2025-08-16", end:"2025-08-16", span:1, category:"holiday", kind:"Holiday", title:"Krishnasthami", audience:[] },
+      { id:"e004", start:"2025-08-20", end:"2025-08-22", span:3, category:"assessment", kind:"Assessment", title:"M1 Target 1", audience:[] },
+      { id:"e005", start:"2025-08-27", end:"2025-08-27", span:1, category:"holiday", kind:"Holiday", title:"Vinayaka Chavathi", audience:[] },
+      { id:"e006", start:"2025-09-04", end:"2025-09-04", span:1, category:"assessment", kind:"Assessment", title:"M1 Target 3", audience:[] },
+      { id:"e007", start:"2025-09-05", end:"2025-09-05", span:1, category:"holiday", kind:"Holiday", title:"Milad-un-Nabi", audience:[] },
+      { id:"e008", start:"2025-09-06", end:"2025-09-06", span:1, category:"assessment", kind:"Assessment", title:"M1 Target 3", audience:[] },
+      { id:"e009", start:"2025-09-08", end:"2025-09-10", span:3, category:"assessment", kind:"Assessment", title:"M1 Target 4", audience:[] },
+      { id:"e010", start:"2025-09-11", end:"2025-09-11", span:1, category:"academic", kind:"Academic milestone", title:"Commencement of Module-2", audience:[] },
+      { id:"e011", start:"2025-09-29", end:"2025-09-29", span:1, category:"holiday", kind:"Holiday", title:"Additional Holiday", audience:[] },
+      { id:"e012", start:"2025-09-30", end:"2025-09-30", span:1, category:"holiday", kind:"Holiday", title:"Durgaastami", audience:[] },
+      { id:"e013", start:"2025-10-01", end:"2025-10-01", span:1, category:"holiday", kind:"Holiday", title:"Additional Holiday", audience:[] },
+      { id:"e014", start:"2025-10-02", end:"2025-10-02", span:1, category:"holiday", kind:"Holiday", title:"Vijaya Dasami / Gandhi Jayanthi", audience:[] },
+      { id:"e015", start:"2025-10-16", end:"2025-10-18", span:3, category:"assessment", kind:"Assessment", title:"M2 Target 1", audience:[] },
+      { id:"e016", start:"2025-10-20", end:"2025-10-20", span:1, category:"holiday", kind:"Holiday", title:"Deepavali", audience:[] },
+      { id:"e017", start:"2025-10-31", end:"2025-11-01", span:2, category:"assessment", kind:"Assessment", title:"M2 Target 3", audience:[] },
+      { id:"e018", start:"2025-11-03", end:"2025-11-05", span:3, category:"assessment", kind:"Assessment", title:"M2 Target 4", audience:[] },
+      { id:"e019", start:"2025-11-06", end:"2025-11-08", span:3, category:"assessment", kind:"Assessment", title:"Preparation & Summative Assessment (P-Based)", audience:[] },
+      { id:"e020", start:"2025-11-10", end:"2025-11-15", span:6, category:"assessment", kind:"Assessment", title:"Preparation & Summative Assessment (P-Based)", audience:[] },
+      { id:"e021", start:"2025-11-17", end:"2025-11-22", span:6, category:"assessment", kind:"Assessment", title:"Summative Assessment (L-Based)", audience:[] },
+      { id:"e022", start:"2025-11-24", end:"2025-11-29", span:6, category:"assessment", kind:"Assessment", title:"Summative Assessment (L-Based)", audience:[] },
+      { id:"e023", start:"2025-12-15", end:"2025-12-15", span:1, category:"academic", kind:"Academic milestone", title:"Commencement of Module-1 (II Sem)", audience:[] }
+    ] },
   { id:"2025-26-2", year:"2025-26", sem:"Sem-II", label:"2025-26 Sem-II",
     range:{ from:"2025-12-21", to:"2026-05-23" },
     events: [
