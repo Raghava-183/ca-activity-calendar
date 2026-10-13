@@ -464,6 +464,8 @@ main{max-width:1400px;margin:0 auto;padding:0 1.4rem 4rem}
 .rep-table .pl li{margin-bottom:.3rem}
 .rep-table .pl b{font-weight:600;color:var(--navy-900);display:block}
 .rep-table .pl span{color:var(--ink-faint);font-size:.68rem;word-break:break-all}
+.rep-table .pl a{color:var(--navy-500);font-size:.68rem;word-break:break-all;text-decoration:underline;text-underline-offset:2px}
+.rep-table .pl a:hover{color:var(--navy-900)}
 .rep-table .none{color:var(--vred);font-weight:600}
 .st-done{color:var(--ok);font-weight:600}
 .st-plan{color:var(--ink-soft);font-weight:600}
@@ -512,7 +514,7 @@ footer b{color:#fff;font-weight:600}
   .rep-table tr,.sheet-table tr{break-inside:avoid}
   .rep-table thead,.sheet-table thead{display:table-header-group}
   .rep-table tr:nth-child(even) td,.sheet-table tr:nth-child(even) td{background:none}
-  .rep-table .pl span{font-size:6.8pt}
+  .rep-table .pl span,.rep-table .pl a{font-size:6.8pt;color:var(--ink-faint);text-decoration:none}
   .seg{border:0;background:none;box-shadow:none;padding:0}
   .seg button{display:none;padding:0}
   .seg button[aria-pressed="true"]{display:inline;box-shadow:none;background:none;font-weight:700}
@@ -1306,7 +1308,7 @@ function drawReport(){
       <td class="ttl"><b>${esc(e.title)}</b>${(e.audience||[]).length?`<em>${esc(e.audience.join(" \u00b7 "))}</em>`:""}</td>
       <td class="${statusOf(e.id)==="completed"?"st-done":"st-plan"}">${statusOf(e.id)==="completed"?"Completed":"Planned"}</td>
       <td>${ps.length
-        ? `<ul class="pl">${ps.map(x=>`<li><b>${esc(x.label)}</b><span>${esc(shortUrl(x.url))}</span></li>`).join("")}</ul>`
+        ? `<ul class="pl">${ps.map(x=>`<li><b>${esc(x.label)}</b><a href="${esc(x.url)}" target="_blank" rel="noopener" title="${esc(x.url)}">${esc(shortUrl(x.url))}</a></li>`).join("")}</ul>`
         : `<span class="none">Not attached</span>`}</td>
     </tr>`;
   }).join("");
